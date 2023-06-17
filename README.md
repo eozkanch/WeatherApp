@@ -1,5 +1,5 @@
+Check out the [Weather App](https://weather-app-eozkanch.vercel.app/) for real-time weather information.
 
-https://weather-app-eozkanch.vercel.app/
 
 <img src="/Weather-App/src/images/project_img_1.jpeg" witdth ="400px">
 
