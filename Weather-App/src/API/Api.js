@@ -7,7 +7,7 @@ import { BgImages } from '../components/BgImages';
 import { Spinner } from 'react-bootstrap';
 
 const Api = () => {
-  const apiKey = process.env.REACT_APP_GHOST_API_KEY;
+  const apiKey = "REMOVED_API_KEY";
 
   const [data, setData] = useState({});
   const [search, setSearch] = useState('');
