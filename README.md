@@ -1,5 +1,5 @@
 
-<a href="https://weather-app-eozkanch.vercel.app/"
+https://weather-app-eozkanch.vercel.app/
 
 <img src="/Weather-App/src/images/project_img_1.jpeg" witdth ="400px">
 
