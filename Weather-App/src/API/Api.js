@@ -12,7 +12,7 @@ const Api = () => {
   const [data, setData] = useState({});
   const [search, setSearch] = useState('');
   const [value, setValue] = useState('');
-  const [countryData, setCountryData] = useState({});
+  const [countryData, setCountryData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showCountryFlag, setShowCountryFlag] = useState(false);
   const [flagUrl, setFlagUrl] = useState('');
@@ -30,7 +30,7 @@ const Api = () => {
         setData(response.data);
         console.log(response.data);
         const city = response.data?.location?.tz_id.split('/')[1];
-        getCityTime(city);
+        getCityTime(city, response.data);
       } catch (error) {
         console.error(error);
       } finally {
@@ -41,9 +41,9 @@ const Api = () => {
     if (search !== '') {
       getApi();
     }
-  }, [search]);
+  }, [search, apiKey]);
 
-  const getCityTime = (city) => {
+  const getCityTime = (city, data) => {
     // Calculate city time and check if it's evening
     const cityTime = data?.location?.localtime;
     const currentHour = new Date(cityTime).getHours();
@@ -69,35 +69,32 @@ const Api = () => {
     getCountryData();
   }, []);
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    setSearch(value);
-    setValue('');
-  };
-
   useEffect(() => {
     // Get country flag based on weather data
+    const getCountryFlag = (country) => {
+      // Find the flag URL for the given country
+      if (country && countryData.length > 0) {
+        const countryInfo = countryData.find((item) => item.name.common === country);
+        return countryInfo ? countryInfo.flags.svg : '';
+      }
+      return '';
+    };
+
     const country = data?.location?.country;
     const countryFlag = getCountryFlag(country);
     setShowCountryFlag(!!countryFlag);
     setFlagUrl(countryFlag);
   }, [data, countryData]);
 
-  const getCountryFlag = (country) => {
-    // Find the flag URL for the given country
-    if (country && Object.keys(countryData).length > 0) {
-      const countryInfo = countryData.find((item) => item.name.common === country);
-      return countryInfo ? countryInfo.flags.svg : '';
-    }
-    return '';
+  const onSubmit = (e) => {
+    e.preventDefault();
+    setSearch(value);
   };
 
-  const condition = Object.entries(data).length !== 0 && data.current.condition.text;
-
+  const condition = data?.current?.condition?.text;
   const conditionStyle = {
-    // Set background image based on weather condition
-    background: condition
-      ? condition === 'Sunny'
+    background:
+      condition === 'Sunny'
         ? `url(${BgImages.sunny})`
         : condition === 'Clear'
         ? `url(${BgImages.clear})`
@@ -126,8 +123,7 @@ const Api = () => {
         ? `url(${BgImages.snow})`
         : condition === 'Mist' || condition === 'Overcast' || condition === 'Fog'
         ? `url(${BgImages.overcast})`
-        : `url(${BgImages.general})`
-      : `url(${BgImages.general})`,
+        : `url(${BgImages.general})`,
   };
 
   return (
