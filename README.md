@@ -7,7 +7,7 @@ Check out the [Weather App](https://weather-app-eozkanch.vercel.app/) for real-t
 This React component fetches weather data from the WeatherAPI and country data from the Rest Countries API. It provides the following functionalities:
 
 
-<img src="/login-app/public/images/login.jpeg" witdth ="400px">
+<img src="/Weather-App/src/images/project_img_2.jpeg" witdth ="400px">
 
 
 1. Current Weather Display: The component shows the current weather condition based on the fetched data from the WeatherAPI. It dynamically sets the background image according to the weather condition.
