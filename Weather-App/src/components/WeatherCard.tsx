@@ -100,8 +100,17 @@ export default function WeatherCard({ data, onCityChange }: WeatherCardProps) {
     <div className="w-full h-full flex flex-col text-white overflow-hidden">
       {/* Main Content */}
       <div className="relative z-10 flex flex-col h-full px-6 py-8 overflow-y-auto">
-        {/* City Input Toggle */}
-        <div className="flex justify-end mb-4">
+        {/* Top Navigation */}
+        <div className="flex justify-between items-center mb-4">
+          {/* About Link */}
+          <a 
+            href="/about" 
+            className="text-white/70 hover:text-white text-sm transition-colors duration-200"
+          >
+            About
+          </a>
+          
+          {/* City Input Toggle */}
           <button 
             onClick={() => setShowCityInput(!showCityInput)}
             className="text-white text-sm opacity-70 hover:opacity-100 px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm"
@@ -211,15 +220,6 @@ export default function WeatherCard({ data, onCityChange }: WeatherCardProps) {
           </div>
         )}
 
-        {/* About Link */}
-        <div className="mt-2 pt-4 text-center">
-          <a 
-            href="/about" 
-            className="text-white/70 hover:text-white text-sm transition-colors duration-200 underline inline-block"
-          >
-            About This Project
-          </a>
-        </div>
       </div>
     </div>
   );
