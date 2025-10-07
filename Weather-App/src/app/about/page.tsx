@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 export default function About() {
   return (
     <>
@@ -91,7 +93,7 @@ export default function About() {
 
         <div className="max-w-4xl mx-auto pb-12 relative z-10">
           {/* Back Button */}
-          <a 
+          <Link 
             href="/"
             className="inline-flex items-center text-cyan-400 hover:text-cyan-300 mb-8 transition-all duration-300 group"
           >
@@ -99,7 +101,7 @@ export default function About() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
             <span className="font-medium">Back to Weather App</span>
-          </a>
+          </Link>
 
           {/* Title with Gradient */}
           <h1 className="text-5xl md:text-6xl font-bold mb-8 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent leading-tight">

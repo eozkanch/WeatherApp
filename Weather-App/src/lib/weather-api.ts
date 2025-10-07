@@ -56,9 +56,9 @@ export const fetchWeatherData = async (cityName: string): Promise<WeatherData> =
       `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${cityName}&days=3&aqi=yes&alerts=no`
     );
     return response.data;
-  } catch (error: any) {
+  } catch (error: unknown) {
     // API hatasını kontrol et
-    if (error.response) {
+    if (axios.isAxiosError(error) && error.response) {
       // API yanıt verdi ama hata kodu döndü
       if (error.response.status === 400) {
         throw new Error('City not found. Please check the spelling and try again.');
@@ -67,9 +67,11 @@ export const fetchWeatherData = async (cityName: string): Promise<WeatherData> =
       } else if (error.response.status === 403) {
         throw new Error('API key limit exceeded. Please try again later.');
       }
-    } else if (error.request) {
+    } else if (axios.isAxiosError(error) && error.request) {
       // İstek gönderildi ama yanıt alınamadı
       throw new Error('Network error. Please check your internet connection.');
+    } else if (error instanceof Error) {
+      throw error;
     }
     
     // Genel hata mesajı
