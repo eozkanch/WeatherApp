@@ -124,7 +124,7 @@ export default function NotFound() {
           </h2>
           <p className="text-lg md:text-xl text-gray-400 mb-8">
             Oops! Looks like this page got lost in the clouds. 
-            The weather forecast couldn't locate this route.
+            The weather forecast couldn&apos;t locate this route.
           </p>
 
           {/* Buttons */}
