@@ -113,17 +113,18 @@ export default function WeatherCard({ data, onCityChange }: WeatherCardProps) {
         {/* City Input */}
         {showCityInput && (
           <div className="mb-6">
-            <form onSubmit={handleCitySubmit} className="flex gap-2">
+            <form onSubmit={handleCitySubmit} className="flex flex-col sm:flex-row gap-3">
               <input
                 type="text"
                 value={cityInput}
                 onChange={(e) => setCityInput(e.target.value)}
                 placeholder="Enter city name..."
-                className="flex-1 px-4 py-2 bg-white/20 text-white rounded-xl backdrop-blur-sm border border-white/30 focus:border-white/50 focus:outline-none placeholder-white/60"
+                autoFocus
+                className="flex-1 px-5 py-3 sm:py-2 bg-white/20 text-white text-base sm:text-sm rounded-xl backdrop-blur-sm border border-white/30 focus:border-white/50 focus:outline-none placeholder-white/60 min-h-[48px] sm:min-h-0"
               />
               <button
                 type="submit"
-                className="px-4 py-2 bg-white/30 text-white rounded-xl hover:bg-white/40 backdrop-blur-sm"
+                className="px-6 py-3 sm:py-2 bg-white/30 text-white text-base sm:text-sm font-medium rounded-xl hover:bg-white/40 active:scale-95 backdrop-blur-sm transition-all min-h-[48px] sm:min-h-0 sm:w-auto"
               >
                 OK
               </button>
@@ -211,10 +212,10 @@ export default function WeatherCard({ data, onCityChange }: WeatherCardProps) {
         )}
 
         {/* About Link */}
-        <div className="mt-auto pt-4 pb-2 text-center">
+        <div className="mt-2 pt-4 text-center">
           <a 
             href="/about" 
-            className="text-white/70 hover:text-white text-sm transition-colors duration-200 underline"
+            className="text-white/70 hover:text-white text-sm transition-colors duration-200 underline inline-block"
           >
             About This Project
           </a>
