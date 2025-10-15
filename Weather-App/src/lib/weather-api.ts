@@ -85,10 +85,15 @@ export const isDay = (localtime: string): boolean => {
   return hour >= 6 && hour < 20; // 6:00 - 20:00 arası gündüz
 };
 
+// Optimize edilmiş resim dosyalarını döndür
+const getOptimizedImagePath = (baseName: string): string => {
+  return `/bg-images-optimized/${baseName}`;
+};
+
 // Hava durumuna ve gündüz/gece durumuna göre arkaplan resmi döndür
 export const getBackgroundImage = (condition: string, localtime: string): string => {
   if (!condition) {
-    return isDay(localtime) ? '/bg-images/general-day.jpg' : '/bg-images/general-night.jpg';
+    return isDay(localtime) ? getOptimizedImagePath('general-day') : getOptimizedImagePath('general-night');
   }
   
   const conditionLower = condition.toLowerCase();
@@ -96,38 +101,38 @@ export const getBackgroundImage = (condition: string, localtime: string): string
   
   // Clear / Sunny
   if (conditionLower.includes('clear')) {
-    return isDaytime ? '/bg-images/clear-day.jpg' : '/bg-images/clear-night-sky.jpg';
+    return isDaytime ? getOptimizedImagePath('clear-day') : getOptimizedImagePath('clear-night-sky');
   }
   
   if (conditionLower.includes('sunny')) {
-    return '/bg-images/sunny.jpg';
+    return getOptimizedImagePath('sunny');
   }
   
   // Cloudy
   if (conditionLower.includes('cloudy') && !conditionLower.includes('partly')) {
-    return isDaytime ? '/bg-images/cloudy-day-sky.jpg' : '/bg-images/cloudy-night-sky.jpg';
+    return isDaytime ? getOptimizedImagePath('cloudy-day-sky') : getOptimizedImagePath('cloudy-night-sky');
   }
   
   // Overcast / Partly Cloudy
   if (conditionLower.includes('overcast') || conditionLower.includes('partly')) {
-    return isDaytime ? '/bg-images/overcast-day.jpg' : '/bg-images/overcast-night.jpg';
+    return isDaytime ? getOptimizedImagePath('overcast-day') : getOptimizedImagePath('overcast-night');
   }
   
   // Rain / Drizzle
   if (conditionLower.includes('rain') || conditionLower.includes('drizzle')) {
-    return isDaytime ? '/bg-images/rainy-day.jpg' : '/bg-images/rainy-night.jpg';
+    return isDaytime ? getOptimizedImagePath('rainy-day') : getOptimizedImagePath('rainy-night');
   }
   
   // Snow
   if (conditionLower.includes('snow')) {
-    return isDaytime ? '/bg-images/snow-day.jpg' : '/bg-images/snow-night.jpg';
+    return isDaytime ? getOptimizedImagePath('snow-day') : getOptimizedImagePath('snow-night');
   }
   
   // Storm / Thunder
   if (conditionLower.includes('storm') || conditionLower.includes('thunder')) {
-    return isDaytime ? '/bg-images/storm-day.jpg' : '/bg-images/storm-night.jpg';
+    return isDaytime ? getOptimizedImagePath('storm-day') : getOptimizedImagePath('storm-night');
   }
   
   // Varsayılan
-  return isDaytime ? '/bg-images/general-day.jpg' : '/bg-images/general-night.jpg';
+  return isDaytime ? getOptimizedImagePath('general-day') : getOptimizedImagePath('general-night');
 };
