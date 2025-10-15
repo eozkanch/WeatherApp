@@ -39,6 +39,26 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Document Title */}
+        <title>Weather App - Real-time Weather Forecast</title>
+        <meta name="description" content="Get real-time weather forecasts with beautiful backgrounds. Offline-capable Progressive Web App with accurate weather data for any location worldwide." />
+        <meta name="keywords" content="weather, forecast, meteorology, climate, temperature, rain, snow, sunshine, offline weather app" />
+        <meta name="author" content="Weather App" />
+        <meta name="robots" content="index, follow" />
+        
+        {/* Open Graph Meta Tags */}
+        <meta property="og:title" content="Weather App - Real-time Weather Forecast" />
+        <meta property="og:description" content="Get real-time weather forecasts with beautiful backgrounds. Offline-capable Progressive Web App." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://weather-app-orpin-eight.vercel.app" />
+        <meta property="og:image" content="https://weather-app-orpin-eight.vercel.app/icon-512.png" />
+        
+        {/* Twitter Card Meta Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Weather App - Real-time Weather Forecast" />
+        <meta name="twitter:description" content="Get real-time weather forecasts with beautiful backgrounds. Offline-capable Progressive Web App." />
+        <meta name="twitter:image" content="https://weather-app-orpin-eight.vercel.app/icon-512.png" />
+        
         {/* Kritik CSS inline - Above the fold */}
         <style dangerouslySetInnerHTML={{
           __html: `
@@ -72,13 +92,16 @@ export default function RootLayout({
         
         {/* PWA Manifest */}
         <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="theme-color" content="#667eea" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="Weather App" />
         
         {/* Preload kritik kaynaklar */}
-        <link rel="preload" href="/bg-images-optimized/general-day.webp" as="image" type="image/webp" />
         <link rel="dns-prefetch" href="//api.weatherapi.com" />
       </head>
       <body
