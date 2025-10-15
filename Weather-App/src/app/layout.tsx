@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
+import OfflineIndicator from "@/components/OfflineIndicator";
+import CacheDebugPanel from "@/components/CacheDebugPanel";
 
 // Font optimizasyonu - display swap ile
 const geistSans = Geist({
@@ -70,6 +73,13 @@ export default function RootLayout({
             .object-cover { object-fit: cover; }
           `
         }} />
+        {/* PWA Manifest */}
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#667eea" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Weather App" />
+        
         {/* Preload kritik kaynaklar */}
         <link rel="preload" href="/bg-images-optimized/general-day.webp" as="image" type="image/webp" />
         <link rel="dns-prefetch" href="//api.weatherapi.com" />
@@ -78,6 +88,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning
       >
+        <ServiceWorkerRegistration />
+        <OfflineIndicator />
+        <CacheDebugPanel />
         {children}
       </body>
     </html>
