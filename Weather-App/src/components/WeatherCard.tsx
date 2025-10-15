@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { Moon, Sun, Cloud, CloudRain, CloudSnow, Zap, CloudDrizzle } from 'lucide-react';
 import { WeatherData } from '@/lib/weather-api';
 
@@ -13,8 +13,8 @@ export default function WeatherCard({ data, onCityChange }: WeatherCardProps) {
   const [showCityInput, setShowCityInput] = useState(false);
   const [cityInput, setCityInput] = useState("");
 
-  // Get weather icon based on condition
-  const getWeatherIcon = (condition: string, size: string = "w-8 h-8") => {
+  // Memoized weather icon function
+  const getWeatherIcon = useCallback((condition: string, size: string = "w-8 h-8") => {
     if (!condition) return <Moon className={size} />;
     
     const conditionLower = condition.toLowerCase();
@@ -37,20 +37,20 @@ export default function WeatherCard({ data, onCityChange }: WeatherCardProps) {
       return <Zap className={size} />;
     }
     return <Moon className={size} />;
-  };
+  }, []);
 
-  // Handle city change
-  const handleCitySubmit = (e: React.FormEvent) => {
+  // Memoized city submit handler
+  const handleCitySubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     if (cityInput.trim() && onCityChange) {
       onCityChange(cityInput.trim());
       setCityInput("");
       setShowCityInput(false);
     }
-  };
+  }, [cityInput, onCityChange]);
 
-  // Get current hour and next 6 hours
-  const getCurrentAndNextHours = () => {
+  // Memoized hourly forecast data
+  const hours = useMemo(() => {
     if (!data?.forecast?.forecastday?.[0]?.hour) return [];
     
     const currentTime = new Date();
@@ -67,10 +67,10 @@ export default function WeatherCard({ data, onCityChange }: WeatherCardProps) {
         icon: getWeatherIcon(hour.condition.text, "w-6 h-6")
       };
     });
-  };
+  }, [data?.forecast?.forecastday, getWeatherIcon]);
 
-  // Daily forecast data from API
-  const getDailyForecast = () => {
+  // Memoized daily forecast data
+  const days = useMemo(() => {
     if (!data?.forecast?.forecastday) return [];
     
     const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -86,15 +86,16 @@ export default function WeatherCard({ data, onCityChange }: WeatherCardProps) {
         icon: getWeatherIcon(day.day.condition.text, "w-8 h-8")
       };
     });
-  };
+  }, [data?.forecast?.forecastday, getWeatherIcon]);
 
-  const hours = getCurrentAndNextHours();
-  const days = getDailyForecast();
-
-  // Get high/low for today
-  const todayForecast = data?.forecast?.forecastday?.[0]?.day;
-  const highTemp = todayForecast ? Math.round(todayForecast.maxtemp_c) : null;
-  const lowTemp = todayForecast ? Math.round(todayForecast.mintemp_c) : null;
+  // Memoized temperature data
+  const temperatureData = useMemo(() => {
+    const todayForecast = data?.forecast?.forecastday?.[0]?.day;
+    return {
+      highTemp: todayForecast ? Math.round(todayForecast.maxtemp_c) : null,
+      lowTemp: todayForecast ? Math.round(todayForecast.mintemp_c) : null,
+    };
+  }, [data?.forecast?.forecastday]);
 
   return (
     <div className="w-full h-full flex flex-col text-white overflow-hidden">
@@ -167,11 +168,11 @@ export default function WeatherCard({ data, onCityChange }: WeatherCardProps) {
             </div>
 
             {/* High/Low */}
-            {highTemp !== null && lowTemp !== null && (
+            {temperatureData.highTemp !== null && temperatureData.lowTemp !== null && (
               <div className="text-center mb-6">
                 <p className="text-lg font-light">
-                  <span className="text-white/90">↑ {highTemp}°</span>
-                  <span className="mx-2 text-white/90">↓ {lowTemp}°</span>
+                  <span className="text-white/90">↑ {temperatureData.highTemp}°</span>
+                  <span className="mx-2 text-white/90">↓ {temperatureData.lowTemp}°</span>
                 </p>
               </div>
             )}

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import WeatherCard from '@/components/WeatherCard';
 import Loading from '@/components/Loading';
 import { fetchWeatherData, WeatherData, getBackgroundImage } from '@/lib/weather-api';
@@ -9,7 +10,7 @@ export default function Home() {
   const [data, setData] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [bgImage, setBgImage] = useState<string>('/bg-images/general-day.jpg');
+  const [bgImage, setBgImage] = useState<string>('/bg-images-optimized/general-day');
 
   const loadWeatherData = async (cityName: string) => {
     setLoading(true);
@@ -46,15 +47,20 @@ export default function Home() {
   }, []);
 
   return (
-    <div 
-      className="h-screen w-screen flex items-center justify-center overflow-hidden relative"
-      style={{
-        backgroundImage: `url('${bgImage}')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-      }}
-    >
+    <div className="h-screen w-screen flex items-center justify-center overflow-hidden relative">
+      {/* Optimized Background Image */}
+      <Image
+        src={bgImage}
+        alt="Weather background"
+        fill
+        priority
+        quality={85}
+        className="object-cover"
+        sizes="100vw"
+        placeholder="blur"
+        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+      />
+      
       {/* Background Overlay - daha karanlık overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/40"></div>
       
