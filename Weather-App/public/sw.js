@@ -6,9 +6,6 @@ const DYNAMIC_CACHE_NAME = 'weather-app-dynamic-v1.1.0';
 // Kritik statik dosyalar - Above the fold
 const CRITICAL_ASSETS = [
   '/',
-  '/_next/static/chunks/150316a471952cee.js',
-  '/_next/static/chunks/2008ffcf9e5b170c.js',
-  '/_next/static/chunks/8082ab48faca5ea1.js',
   // Kritik resimler
   '/bg-images-optimized/general-day.webp',
   '/bg-images-optimized/general-night.webp',
@@ -55,10 +52,24 @@ self.addEventListener('install', (event) => {
   
   event.waitUntil(
     Promise.all([
-      // Sadece kritik cache'i oluştur
-      caches.open(STATIC_CACHE_NAME).then((cache) => {
+      // Sadece kritik cache'i oluştur - hata toleranslı
+      caches.open(STATIC_CACHE_NAME).then(async (cache) => {
         console.log('Service Worker: Caching critical assets');
-        return cache.addAll(CRITICAL_ASSETS);
+        
+        // Her dosyayı tek tek cache'le (hata toleranslı)
+        for (const asset of CRITICAL_ASSETS) {
+          try {
+            const response = await fetch(asset);
+            if (response.ok) {
+              await cache.put(asset, response);
+              console.log('Service Worker: Cached critical asset:', asset);
+            } else {
+              console.log('Service Worker: Failed to cache critical asset (not found):', asset);
+            }
+          } catch (error) {
+            console.log('Service Worker: Failed to cache critical asset (error):', asset, error);
+          }
+        }
       }),
       // Service Worker'ı hemen aktif et
       self.skipWaiting()
