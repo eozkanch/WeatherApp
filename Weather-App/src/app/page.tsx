@@ -10,7 +10,7 @@ export default function Home() {
   const [data, setData] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [bgImage, setBgImage] = useState<string>('/bg-images-optimized/general-day');
+  const [bgImage, setBgImage] = useState<string>('/bg-images-optimized/general-day.webp');
 
   const loadWeatherData = async (cityName: string) => {
     setLoading(true);

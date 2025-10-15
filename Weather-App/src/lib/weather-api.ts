@@ -85,9 +85,9 @@ export const isDay = (localtime: string): boolean => {
   return hour >= 6 && hour < 20; // 6:00 - 20:00 arası gündüz
 };
 
-// Optimize edilmiş resim dosyalarını döndür
+// Optimize edilmiş resim dosyalarını döndür - Next.js Image component için tam yol
 const getOptimizedImagePath = (baseName: string): string => {
-  return `/bg-images-optimized/${baseName}`;
+  return `/bg-images-optimized/${baseName}.webp`;
 };
 
 // Hava durumuna ve gündüz/gece durumuna göre arkaplan resmi döndür
