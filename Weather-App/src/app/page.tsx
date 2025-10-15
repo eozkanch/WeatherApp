@@ -2,9 +2,15 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import WeatherCard from '@/components/WeatherCard';
+import dynamic from 'next/dynamic';
 import Loading from '@/components/Loading';
 import { fetchWeatherData, WeatherData, getBackgroundImage } from '@/lib/weather-api';
+
+// Lazy load WeatherCard component
+const WeatherCard = dynamic(() => import('@/components/WeatherCard'), {
+  loading: () => <Loading />,
+  ssr: false,
+});
 
 export default function Home() {
   const [data, setData] = useState<WeatherData | null>(null);

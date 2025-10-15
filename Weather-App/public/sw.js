@@ -1,18 +1,22 @@
 // Service Worker - Offline Caching ve Performance Optimization
-const CACHE_NAME = 'weather-app-v1.0.0';
-const STATIC_CACHE_NAME = 'weather-app-static-v1.0.0';
-const DYNAMIC_CACHE_NAME = 'weather-app-dynamic-v1.0.0';
+const CACHE_NAME = 'weather-app-v1.1.0';
+const STATIC_CACHE_NAME = 'weather-app-static-v1.1.0';
+const DYNAMIC_CACHE_NAME = 'weather-app-dynamic-v1.1.0';
 
-// Cache edilecek statik dosyalar
-const STATIC_ASSETS = [
+// Kritik statik dosyalar - Above the fold
+const CRITICAL_ASSETS = [
   '/',
-  '/about',
   '/_next/static/chunks/150316a471952cee.js',
   '/_next/static/chunks/2008ffcf9e5b170c.js',
   '/_next/static/chunks/8082ab48faca5ea1.js',
   // Kritik resimler
   '/bg-images-optimized/general-day.webp',
   '/bg-images-optimized/general-night.webp',
+];
+
+// Non-kritik statik dosyalar - Lazy load
+const NON_CRITICAL_ASSETS = [
+  '/about',
   '/bg-images-optimized/clear-day.webp',
   '/bg-images-optimized/clear-night-sky.webp',
   '/bg-images-optimized/cloudy-day-sky.webp',
@@ -51,10 +55,10 @@ self.addEventListener('install', (event) => {
   
   event.waitUntil(
     Promise.all([
-      // Statik cache'i oluştur
+      // Sadece kritik cache'i oluştur
       caches.open(STATIC_CACHE_NAME).then((cache) => {
-        console.log('Service Worker: Caching static assets');
-        return cache.addAll(STATIC_ASSETS);
+        console.log('Service Worker: Caching critical assets');
+        return cache.addAll(CRITICAL_ASSETS);
       }),
       // Service Worker'ı hemen aktif et
       self.skipWaiting()
@@ -80,10 +84,34 @@ self.addEventListener('activate', (event) => {
         );
       }),
       // Service Worker'ı hemen kontrol et
-      self.clients.claim()
+      self.clients.claim(),
+      // Non-kritik dosyaları arka planda cache'le
+      cacheNonCriticalAssets()
     ])
   );
 });
+
+// Non-kritik dosyaları arka planda cache'le
+async function cacheNonCriticalAssets() {
+  try {
+    const cache = await caches.open(STATIC_CACHE_NAME);
+    
+    // Non-kritik dosyaları tek tek cache'le (non-blocking)
+    NON_CRITICAL_ASSETS.forEach(async (asset) => {
+      try {
+        const response = await fetch(asset);
+        if (response.ok) {
+          await cache.put(asset, response);
+          console.log('Service Worker: Cached non-critical asset:', asset);
+        }
+      } catch (error) {
+        console.log('Service Worker: Failed to cache non-critical asset:', asset);
+      }
+    });
+  } catch (error) {
+    console.error('Service Worker: Failed to cache non-critical assets:', error);
+  }
+}
 
 // Fetch olayları - Cache stratejileri
 self.addEventListener('fetch', (event) => {
