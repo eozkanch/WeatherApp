@@ -72,7 +72,6 @@ export default function RootLayout({
         }} />
         {/* Preload kritik kaynaklar */}
         <link rel="preload" href="/bg-images-optimized/general-day.webp" as="image" type="image/webp" />
-        <link rel="preload" href="/bg-images-optimized/general-day.avif" as="image" type="image/avif" />
         <link rel="dns-prefetch" href="//api.weatherapi.com" />
       </head>
       <body
