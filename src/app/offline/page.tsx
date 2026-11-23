@@ -1,76 +1,68 @@
 'use client';
 
+import { WifiOff } from 'lucide-react';
+import { primaryButton, secondaryButton } from '@/components/ui/buttons';
+
+const AVAILABLE = ['Forecasts you have already viewed', 'The app interface'];
+const NEEDS_CONNECTION = ['Searching for a new city', 'City photos and live updates'];
+
+function Group({ title, items }: { title: string; items: string[] }) {
+  return (
+    <div>
+      <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-50">{title}</h2>
+      <ul className="space-y-1.5 text-sm text-slate-400">
+        {items.map((item) => (
+          <li key={item} className="flex items-start gap-2.5">
+            <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-sky-400/70" />
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 export default function OfflinePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white/10 backdrop-blur-md rounded-2xl p-8 text-center text-white">
-        {/* Offline Icon */}
-        <div className="mb-6">
-          <div className="w-20 h-20 mx-auto bg-red-500/20 rounded-full flex items-center justify-center mb-4">
-            <svg className="w-10 h-10 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-12.728 12.728m0-12.728l12.728 12.728" />
-            </svg>
-          </div>
-          <h1 className="text-2xl font-bold mb-2">Offline Mode</h1>
-          <p className="text-white/70">You&apos;re currently offline</p>
-        </div>
+    <main className="relative h-dvh overflow-y-auto bg-slate-950 text-slate-300">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 bg-[radial-gradient(60%_45%_at_50%_0%,rgba(56,189,248,0.10),transparent)]"
+      />
 
-        {/* Offline Message */}
-        <div className="mb-6">
-          <p className="text-sm text-white/80 leading-relaxed">
-            Don&apos;t worry! You can still view cached weather data. 
-            Some features may be limited until you&apos;re back online.
+      <div className="relative flex min-h-full items-center justify-center px-5 py-10">
+        <div className="w-full max-w-md rounded-2xl border border-white/10 bg-white/[0.04] p-8 backdrop-blur-md">
+          <div className="text-center">
+            <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-sky-400/10 ring-1 ring-sky-400/30">
+              <WifiOff aria-hidden="true" className="h-7 w-7 text-sky-300" strokeWidth={1.75} />
+            </div>
+            <h1 className="text-2xl font-semibold tracking-tight text-slate-50">You&apos;re offline</h1>
+            <p className="mt-3 text-sm leading-relaxed text-slate-400">
+              Check your connection. Forecasts you have already viewed stay available and refresh when you are
+              back online.
+            </p>
+          </div>
+
+          <div className="mt-6 grid gap-5 border-t border-white/10 pt-6 sm:grid-cols-2">
+            <Group title="Still available" items={AVAILABLE} />
+            <Group title="Needs a connection" items={NEEDS_CONNECTION} />
+          </div>
+
+          <div className="mt-7 flex flex-col gap-3">
+            <button type="button" onClick={() => window.location.reload()} className={primaryButton}>
+              Try again
+            </button>
+            <button type="button" onClick={() => window.history.back()} className={secondaryButton}>
+              Go back
+            </button>
+          </div>
+
+          <p role="status" className="mt-6 flex items-center justify-center gap-2 text-xs text-slate-500">
+            <span aria-hidden="true" className="h-2 w-2 rounded-full bg-amber-400 motion-safe:animate-pulse" />
+            No internet connection
           </p>
         </div>
-
-        {/* Features Available Offline */}
-        <div className="mb-6 text-left">
-          <h3 className="text-sm font-semibold mb-3 text-white/90">Available Offline:</h3>
-          <ul className="text-xs text-white/70 space-y-2">
-            <li className="flex items-center">
-              <span className="w-1 h-1 bg-green-400 rounded-full mr-2"></span>
-              Cached weather data
-            </li>
-            <li className="flex items-center">
-              <span className="w-1 h-1 bg-green-400 rounded-full mr-2"></span>
-              Background images
-            </li>
-            <li className="flex items-center">
-              <span className="w-1 h-1 bg-green-400 rounded-full mr-2"></span>
-              App interface
-            </li>
-            <li className="flex items-center">
-              <span className="w-1 h-1 bg-yellow-400 rounded-full mr-2"></span>
-              Limited functionality
-            </li>
-          </ul>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="space-y-3">
-          <button 
-            onClick={() => window.location.reload()}
-            className="w-full bg-white/20 hover:bg-white/30 text-white py-3 px-4 rounded-xl transition-colors duration-200 font-medium"
-          >
-            Try Again
-          </button>
-          
-          <button 
-            onClick={() => window.history.back()}
-            className="w-full bg-transparent border border-white/30 hover:border-white/50 text-white py-3 px-4 rounded-xl transition-colors duration-200 font-medium"
-          >
-            Go Back
-          </button>
-        </div>
-
-        {/* Connection Status */}
-        <div className="mt-6 pt-4 border-t border-white/20">
-          <div className="flex items-center justify-center space-x-2 text-xs text-white/60">
-            <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
-            <span>No internet connection</span>
-          </div>
-        </div>
       </div>
-    </div>
+    </main>
   );
 }
