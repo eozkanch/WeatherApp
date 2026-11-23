@@ -195,7 +195,7 @@ export default function WeatherCard({ data, onCityChange, onLocate, locating = f
             {selectedDay !== 0 && (
               <p className="text-xs uppercase tracking-wider opacity-70 mb-3">{dayLabels[selectedDay]} · Hourly</p>
             )}
-            <div ref={hourlyScrollRef} className="flex items-center overflow-x-auto gap-4 pb-2">
+            <div ref={hourlyScrollRef} className="hourly-scroll no-scrollbar flex items-center overflow-x-auto gap-4">
               {hours.map((h, i) => (
                 <div key={`${selectedDay}-${i}`} className="flex flex-col items-center min-w-[60px]">
                   <span className="text-sm font-light mb-2">{h.time}</span>
