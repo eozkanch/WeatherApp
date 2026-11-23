@@ -55,7 +55,6 @@ export class CacheManager {
         cacheNames.map(cacheName => caches.delete(cacheName))
       );
       
-      console.log('All caches cleared successfully');
       return true;
     } catch (error) {
       console.error('Cache clearing failed:', error);
@@ -73,9 +72,6 @@ export class CacheManager {
       const cacheName = this.cacheNames[cacheType];
       const deleted = await caches.delete(cacheName);
       
-      if (deleted) {
-        console.log(`${cacheType} cache cleared successfully`);
-      }
       
       return deleted;
     } catch (error) {
@@ -172,7 +168,6 @@ export class CacheManager {
         }
       }
       
-      console.log('Cache rebuilt successfully');
       return true;
     } catch (error) {
       console.error('Cache rebuild failed:', error);

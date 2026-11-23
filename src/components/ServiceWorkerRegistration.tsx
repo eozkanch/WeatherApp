@@ -23,8 +23,6 @@ export default function ServiceWorkerRegistration() {
             scope: '/'
           });
           
-          console.log('Service Worker registered successfully:', registration);
-          
           // Service Worker güncellemelerini kontrol et
           registration.addEventListener('updatefound', () => {
             const newWorker = registration.installing;
@@ -44,11 +42,9 @@ export default function ServiceWorkerRegistration() {
           // Offline durumu kontrol et
           const checkOnlineStatus = () => {
             if (!navigator.onLine) {
-              console.log('App is offline');
               // Offline durumunda kullanıcıya bildirim göster
               document.body.classList.add('offline');
             } else {
-              console.log('App is online');
               document.body.classList.remove('offline');
             }
           };
